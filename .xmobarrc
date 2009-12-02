@@ -1,0 +1,15 @@
+Config { font         = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
+       , bgColor = "#222222"
+       , fgColor = "#aaaaaa"
+       , position = Top
+       , lowerOnStart = False
+       , commands = [ Run Cpu ["-L","3","-H","50","--high","#f0c040"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run StdinReader
+                    , Run Com "sh" ["~/.scripts/mpd.sh"] "mpd" 10
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader%}{%mpd% · %cpu% · %memory% · %swap% · %date%"
+       }
