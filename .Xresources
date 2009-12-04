@@ -1,0 +1,21 @@
+urxvt*font: -*-proggysmall-*-*-*-*-*-*-*-*-*-*-*-*
+URxvt*termName: rxvt-256color
+urxvt*background: #000044
+urxvt*foreground: #FFFF00
+urxvt*pointerColor: #FFFFFF
+urxvt*pointerColorBackground: #FFFFFF
+urxvt*cursorColor: #FFFF00
+urxvt*internalBorder: 1
+urxvt*loginShell: true
+urxvt*scrollBar: false
+urxvt*scrollKey: true
+urxvt*saveLines: 1000
+urxvt*multiClickTime: 250 
+urxvt*urgentOnBell: true
+
+URxvt.perl-ext-common: default,matcher
+URxvt.urlLauncher: firefox
+URxvt.matcher.button: 1
+URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+
+
