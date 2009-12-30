@@ -10,6 +10,6 @@ Config { font         = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
                     , Run Com "sh" ["~/.scripts/mpd.sh"] "mpd" 10
                     ]
        , sepChar = "%"
-       , alignSep = "}{"
-       , template = "%StdinReader%}{%mpd% · %cpu% · %memory% · %swap% · %date%"
+       , alignSep = ""
+       , template = "%StdinReader%%mpd% · %cpu% · %memory% · %swap% · %date%"
        }
