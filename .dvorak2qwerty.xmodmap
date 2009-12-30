@@ -31,10 +31,3 @@ keysym b = n
 keysym w = comma less 
 keysym v = period greater 
 keysym z = slash question
-!
-! Switch Caps Lock and Escape
-!
-remove Lock = Caps_Lock
-keysym Caps_Lock = Escape
-keysym Escape = Caps_Lock
-add Lock = Caps_Lock
