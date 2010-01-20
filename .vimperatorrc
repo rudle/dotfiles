@@ -1,0 +1,7 @@
+js options.add(["rawsites"], "", "stringlist", "")
+autocmd LocationChange .* :js modes.passAllKeys = options.get("rawsites").values.some(function(r) RegExp(r).test(buffer.URL))
+se rawsites='mail\.google\.com,www\.google\.com/reader/view,www\.google\.ca/reader/view'
+
+noremap j 2j
+noremap k 2k
+
