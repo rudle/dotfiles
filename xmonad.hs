@@ -14,9 +14,9 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.HintedTile
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Maximize
-import XMonad.Layout.Dishes
 import XMonad.Layout.TwoPane
 import XMonad.Layout.Mosaic
 import XMonad.Prompt
@@ -30,15 +30,11 @@ import XMonad.Util.Scratchpad
  
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
-
-import XMonad.Prompt.MPD
-import qualified Network.MPD as MPD
-
 import Data.Ratio
 import System.IO (hPutStrLn)
 import GHC.IOBase (Handle)
 
-myWorkspaces = ["1:main ", " 2:web ", " 3:code ", " 4:logs ", " 5:ssh " ," 6:pdf ", " 7:VM ", " 8:chat ", " 9:web "] 
+myWorkspaces = ["1:main ", " 2:web ", " 3:code ", " 4:ssh ", " 5:dls " ," 6:pdf ", " 7:video ", " 8:chat ", " 9:nine "] 
  
 main :: IO ()
 main = do
@@ -49,20 +45,19 @@ main = do
         , terminal = "urxvt"
         , workspaces = myWorkspaces
         , layoutHook = avoidStruts $ myLayout
-        , manageHook = manageDocks <+>  scratchpadManageHook (W.RationalRect 0.2 0.2 0.5 0.5) <+> composeOne [ isFullscreen -?> doFullFloat ] <+> (className =? "trayer" --> doIgnore) 
+        , manageHook = manageDocks <+> scratchpadManageHook (W.RationalRect 0.2 0.2 0.6 0.5) <+> composeOne [ isFullscreen -?> doFullFloat ] <+> (className =? "trayer" --> doIgnore) 
         , modMask = mod1Mask
         , borderWidth = 2
         , keys = \c -> myKeys c `M.union` keys defaultConfig c
         , logHook = dynamicLogWithPP (myPP xmobar)
-                 >> updatePointer (Relative 1 1)
+                 >> updatePointer (Relative 0.9 0.9)
         }
         where
-            myLayout = layoutHints $ avoidStruts $ smartBorders $ maximize (mosaic 2 [3,2])
-                                 ||| maximize (hintedTile Tall)
+            myLayout = layoutHints $ avoidStruts $ smartBorders $ maximize (hintedTile Tall)
+                                 ||| mosaic 2 [3,2]
                                  ||| hintedTile Wide
                                  ||| TwoPane (3/100) (1/2)
                                  ||| maximize Full
-                                 ||| Dishes 2 (1/16)
                                  ||| tabbed shrinkText myTheme
             hintedTile = HintedTile nmaster delta ratio TopLeft
             nmaster = 1
@@ -116,25 +111,25 @@ main = do
             myKeys conf@(XConfig {XMonad.modMask = modMask, workspaces = ws}) = M.fromList $
                 [ ((modMask,                 xK_Return), promote)
                 , ((modMask,                 xK_b), sendMessage ToggleStruts)
-                , ((modMask,               xK_p), shellPrompt defaultXPConfig)
-                , ((modMask .|. controlMask, xK_x), shellPrompt myXPConfig)
-                , ((modMask .|. controlMask, xK_s), sshPrompt myXPConfig)
                 , ((modMask,                 xK_z), warpToWindow 1 1)
                 , ((modMask,                 xK_q), recompile True >> restart "xmonad" True)
                 , ((modMask .|. shiftMask, xK_n), appendFilePrompt defaultXPConfig "/home/sean/.foo")
                 , ((modMask .|. shiftMask, xK_s), sshPrompt defaultXPConfig)
-                , ((modMask .|. controlMask, xK_x), spawn "hslock" )
-                , ((modMask .|. shiftMask, xK_t), spawn "xclip -o | perl -pi -e 's:$:\n\n:g' >> ~/.foo")
+                , ((modMask,               xK_p), shellPrompt defaultXPConfig)
+                , ((modMask .|. controlMask, xK_x), spawn "slock" )
+                , ((modMask .|. shiftMask, xK_t), spawn "xsel | leander")
                 , ((modMask,               xK_Escape), toggleWS)
+                , ((modMask .|. controlMask, xK_j), nextScreen)
+                , ((modMask .|. controlMask, xK_k), prevScreen)
                 , ((modMask,               xK_o), shiftNextScreen >> nextScreen)
-                , ((modMask  .|. shiftMask, xK_r), scratchpadSpawnActionTerminal "urxvt -background black -foreground green +sb")
+                , ((modMask  .|. shiftMask, xK_r), scratchpadSpawnActionTerminal "urxvt -tr -tint grey -foreground \'#FFFF00\' +sb")
                 , ((modMask, xK_g), goToSelected defaultGSConfig)
-                , ((modMask, xK_x), spawnSelected defaultGSConfig ["xterm", "gvim"])
+                , ((modMask .|. shiftMask, xK_o), withFocused (sendMessage . maximizeRestore))
                 , ((modMask, xK_a), sendMessage Taller)
                 , ((modMask, xK_z), sendMessage Wider)
-                , ((modMask .|. shiftMask, xK_m), addMatching MPD.withMPD defaultXPConfig [MPD.sgArtist, MPD.sgAlbum] >> return ())
-                , ((modMask .|. shiftMask, xK_o), withFocused (sendMessage . maximizeRestore))
+                , ((modMask, xK_r), sendMessage Reset)
+                , ((modMask .|. shiftMask, xK_g     ), windowPromptGoto
+                                                            defaultXPConfig { autoComplete = Just 500000 } )
 
-                , ((modMask .|. shiftMask, xK_g     ), windowPromptGoto defaultXPConfig { autoComplete = Just 500000 } ) 
 
                 ] 
