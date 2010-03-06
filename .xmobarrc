@@ -1,4 +1,4 @@
-Config { font         = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
+Config { font         = "-*-proggytiny-*-*-*-*-*-*-*-*-*-*-iso8859-*"
        , bgColor = "#222222"
        , fgColor = "#aaaaaa"
        , position = Top
@@ -8,8 +8,9 @@ Config { font         = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
                     , Run Swap [] 10
                     , Run StdinReader
                     , Run Com "sh" ["~/.scripts/mpd.sh"] "mpd" 10
+                    , Run Weather "CYKF" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 3600
                     ]
        , sepChar = "%"
-       , alignSep = ""
-       , template = "%StdinReader%%mpd% · %cpu% · %memory% · %swap% · %date%"
+       , alignSep = "}{"
+       , template = "%StdinReader%}{%CYKF% · %mpd% · %cpu% · %memory% · %swap% · %date%"
        }
