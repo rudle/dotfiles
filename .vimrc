@@ -104,12 +104,11 @@ set nomodeline
 " * Text Formatting -- General
 
 " don't make it look like there are line breaks where there aren't:
-set wrap
 
 " use indents of 2 spaces, and have them copied down lines:
 set shiftwidth=2
 set shiftround
-set expandtab
+set noexpandtab
 set autoindent
 
 " normally don't automatically format `text' as it is typed, IE only do this
@@ -788,7 +787,7 @@ let potwiki_home = "$HOME/.wiki/home"
   map tm :tabmove
   set sw=2
   set tabstop=2
-  set expandtab
+  set noexpandtab
   set smartindent
   nmap <C-N><C-T> :RN <CR>
   nmap <C-W><C-N> :vnew <CR>
@@ -865,3 +864,10 @@ autocmd FileType picolisp call s:PicoLisp()
 		endfunction
 autocmd BufRead,BufNewFile *.l setl ft=picolisp
 
+
+set wildmode=list:longest
+
+map <F5> {!}fmt<CR>
+
+
+"set wrap
