@@ -50,7 +50,7 @@ function s:initialize()
   "---------------------------------------------------------------------------
   call s:defineOption('g:fuf_file_prompt'     , '>File>')
   call s:defineOption('g:fuf_file_switchOrder', 20)
-  call s:defineOption('g:fuf_file_exclude'    , '\v\~$|\.o$|\.exe$|\.bak$|\.swp$')
+  call s:defineOption('g:fuf_file_exclude'    , '\v\~$|\.o$|\.exe$|\.bak$|\.swp$|\.gif$|\.png$')
   "---------------------------------------------------------------------------
   call s:defineOption('g:fuf_dir_prompt'     , '>Dir>')
   call s:defineOption('g:fuf_dir_switchOrder', 30)

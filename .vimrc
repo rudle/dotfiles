@@ -108,7 +108,7 @@ set nomodeline
 " use indents of 2 spaces, and have them copied down lines:
 set shiftwidth=2
 set shiftround
-set noexpandtab
+set expandtab
 set autoindent
 
 " normally don't automatically format `text' as it is typed, IE only do this
@@ -159,16 +159,9 @@ autocmd FileType c set formatoptions+=ro
 " for Perl programming, have things in braces indenting themselves:
 autocmd FileType perl set smartindent
 
-" for CSS, also have things in braces indented:
-autocmd FileType css set smartindent
-
 " for HTML, generally format text, but if a long line has been created leave it
 " alone when editing:
 autocmd FileType html set formatoptions+=tl
-
-" for both CSS and HTML, use genuine tab characters for indentation, to make
-" files a few bytes smaller:
-autocmd FileType html,css set noexpandtab tabstop=2
 
 " in makefiles, don't expand tabs to spaces, since actual tab characters are
 " needed, and have indentation at 8 chars to be sure that all indents are tabs
@@ -787,7 +780,7 @@ let potwiki_home = "$HOME/.wiki/home"
   map tm :tabmove
   set sw=2
   set tabstop=2
-  set noexpandtab
+  set expandtab
   set smartindent
   nmap <C-N><C-T> :RN <CR>
   nmap <C-W><C-N> :vnew <CR>
@@ -799,8 +792,6 @@ let potwiki_home = "$HOME/.wiki/home"
   noremap <C-N> :NERDTreeToggle <CR>
   
   let g:allml_global_maps = 1
-
-  noremap <C-h> :!php -l % <CR>
 
   nnoremap <silent> <F3> :Rgrep <CR>
 
@@ -814,7 +805,7 @@ let potwiki_home = "$HOME/.wiki/home"
 
   let mapleader = ","
 
-  nnoremap <Leader>ll :LustyJuggler <CR>
+  nnoremap <Leader>h :LustyJuggler <CR>
   nnoremap <Leader>, :FufBuffer <CR>
 
   nnoremap L :bnext <CR>
@@ -834,40 +825,27 @@ let potwiki_home = "$HOME/.wiki/home"
 
 
   set hidden
-autocmd FileType picolisp call s:PicoLisp()
-	function! s:PicoLisp()
-		setl iskeyword+=?,$,+,*,/,%,=,>,<,!
-
-		syn match PicoLispComment /#.*$/
-		syn region PicoLispCommentRegion start="#{" end="}#"
-		syn match PicoLispNumber /\v<[-+]?\d+(\.\d+)?>/
-		syn region PicoLispString start=/"/ skip=/\\\\\|\\"/ end=/"/
-		syn region PicoLispStringRaw start=/{\$/ end=/\$}/
-		syn match PicoLispParentheses /[()\[\]]/
-		syn keyword PicoLispSpecial NIL T This
-		syn keyword PicoLispDef def redef undef de class extend dm rel var set setq let? let use bind job env up default xchg on off onOff zero one put putl =:
-		syn keyword PicoLispCond and or not nand nor if ifn if2 when unless cond nond case state at while until loop do for throw catch finally quit abort wait task timeout alarm bye later
-		syn keyword PicoLispIO in out pool call fork pipe
-		syn keyword PicoLispDebug test $ !
-
-		hi default link PicoLispComment Comment
-		hi default link PicoLispCommentRegion Comment
-		hi default link PicoLispNumber Number
-		hi default link PicoLispString String
-		hi default link PicoLispStringRaw String
-		hi default link PicoLispSpecial Constant
-		hi PicoLispParentheses ctermfg=8 guifg=DarkGrey
-		hi default link PicoLispDef Define
-		hi default link PicoLispCond Conditional
-		hi default link PicoLispIO Identifier
-		hi default link PicoLispDebug Type
-		endfunction
-autocmd BufRead,BufNewFile *.l setl ft=picolisp
 
 
 set wildmode=list:longest
 
 map <F5> {!}fmt<CR>
 
+autocmd FileType ruby set omnifunc=rubycomplete#Complete
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+
+let bufmru_switchkey = "<Leader>t"
+
+set cursorline cursorcolumn
 
 "set wrap
+
+if has('cmdlog')
+  " cmdlogdir:
+  "     The directory which will be used to store logs.
+  set cmdlogdir=~/.vimlogs/
+  " cmdloginsert:
+  "     Log text entered in normal mode.
+  "     Disabled by default
+  " set cmdloginsert
+end
