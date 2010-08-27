@@ -241,7 +241,7 @@ hi MoreMsg          ctermfg=29                                      cterm=none
 hi ModeMsg          guifg=#76d5f8           guibg=NONE              gui=none
 hi ModeMsg          ctermfg=117             ctermbg=NONE            cterm=none
 " the '~' and '@' and showbreak, '>' double wide char doesn't fit on line
-hi NonText          guifg=#343434                                   gui=none
+hi NonText          guifg=#FF00FF
 hi NonText          ctermfg=235                                     cterm=none
 " the hit-enter prompt (show more output) and yes/no questions
 hi Question         guifg=fg                                        gui=none

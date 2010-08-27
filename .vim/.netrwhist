@@ -1,8 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/etc/nginx'
 let g:netrw_dirhist_2='/home/sean/code/postrank.com/app/views/shared'
 let g:netrw_dirhist_3='/etc/rabbitmq'
 let g:netrw_dirhist_4='/home/sean/code/postrank-core/config/partners'
 let g:netrw_dirhist_5='/home/sean/code/postrank-core/app/consumer/http_consumers'
 let g:netrw_dirhist_6='/home/sean/code/postrank-core/app/api/v3'
+let g:netrw_dirhist_7='/home/sean/.oh-my-zsh'
