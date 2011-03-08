@@ -1,0 +1,19 @@
+#Files (not deleted) in the index
+files=$(git diff-index --name-status --cached HEAD | grep -v ^D | cut -c3-)
+if [ "$files" != "" ]
+then
+  for f in $files
+  do
+    # Remove trailing whitespace if it exists
+    if grep -q "[[:blank:]]$" $f
+    then
+      sed -i "" -e $'s/[ \t]*$//g' $f
+      git add $f
+    fi
+    # replace all tabs with two spaces
+    if grep -e $'\t' $f
+    then
+      sed -i "" -e $'s/	/  /g' $f
+    fi
+done
+fi
