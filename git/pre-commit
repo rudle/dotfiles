@@ -4,16 +4,21 @@ if [ "$files" != "" ]
 then
   for f in $files
   do
-    # Remove trailing whitespace if it exists
-    if grep -q "[[:blank:]]$" $f
-    then
-      sed -i "" -e $'s/[ \t]*$//g' $f
-      git add $f
-    fi
-    # replace all tabs with two spaces
-    if grep -e $'\t' $f
-    then
-      sed -i "" -e $'s/	/  /g' $f
+    if [[ X`echo ${f}|grep -E "\.css$|\.erb$|\.fbml$|\.haml$|\.htm$|\.html$|\.java$|\.js$|\.liquid$|\.rake$|\.rb$|\.rhtml$|\.xhtml$"`X != XX ]]
+      then
+      echo $f
+      # Remove trailing whitespace if it exists
+      if grep -q "[[:blank:]]$" $f
+      then
+        sed -i "" -e $'s/[ \t]*$//g' $f
+        git add $f
+      fi
+      # replace all tabs with two spaces
+      if grep -e $'\t' $f
+      then
+        sed -i "" -e $'s/	/  /g' $f
+        git add $f
+      fi
     fi
 done
 fi
