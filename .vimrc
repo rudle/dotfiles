@@ -52,6 +52,7 @@ autocmd FileType c set formatoptions+=ro
 autocmd FileType html set formatoptions+=tl
 autocmd FileType make set noexpandtab shiftwidth=8
 autocmd FileType ruby set omnifunc=rubycomplete#Complete
+autocmd FileType plaintex set formatoptions+=tl
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 au FileType * setl fo-=cro
 
