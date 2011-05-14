@@ -1,13 +1,12 @@
 "=============================================================================
-" Copyright (c) 2007-2009 Takeshi NISHIDA
+" Copyright (c) 2007-2010 Takeshi NISHIDA
 "
 "=============================================================================
 " LOAD GUARD {{{1
 
-if exists('g:loaded_autoload_fuf_givendir') || v:version < 702
+if !l9#guardScriptLoading(expand('<sfile>:p'), 0, 0, [])
   finish
 endif
-let g:loaded_autoload_fuf_givendir = 1
 
 " }}}1
 "=============================================================================
@@ -21,6 +20,11 @@ endfunction
 "
 function fuf#givendir#getSwitchOrder()
   return -1
+endfunction
+
+"
+function fuf#givendir#getEditableDataNames()
+  return []
 endfunction
 
 "
@@ -40,7 +44,7 @@ endfunction
 function fuf#givendir#launch(initialPattern, partialMatching, prompt, items)
   let s:prompt = (empty(a:prompt) ? '>' : a:prompt)
   let s:items = map(copy(a:items), 'substitute(v:val, ''[/\\]\?$'', "", "")')
-  let s:items = map(s:items, 'fuf#makePathItem(v:val, 0)')
+  let s:items = map(s:items, 'fuf#makePathItem(v:val, "", 0)')
   call fuf#mapToSetSerialIndex(s:items, 1)
   call fuf#mapToSetAbbrWithSnippedWordAsPath(s:items)
   call fuf#launch(s:MODE_NAME, a:initialPattern, a:partialMatching)
@@ -65,24 +69,41 @@ endfunction
 
 "
 function s:handler.getPrompt()
-  return s:prompt
+  return fuf#formatPrompt(s:prompt, self.partialMatching, '')
 endfunction
 
 "
-function s:handler.targetsPath()
+function s:handler.getPreviewHeight()
+  return g:fuf_previewHeight
+endfunction
+
+"
+function s:handler.isOpenable(enteredPattern)
   return 1
 endfunction
 
 "
-function s:handler.onComplete(patternSet)
-  return fuf#filterMatchesAndMapToSetRanks(
-        \ s:items, a:patternSet,
-        \ self.getFilteredStats(a:patternSet.raw), self.targetsPath())
+function s:handler.makePatternSet(patternBase)
+  return fuf#makePatternSet(a:patternBase, 's:interpretPrimaryPatternForPath',
+        \                   self.partialMatching)
 endfunction
 
 "
-function s:handler.onOpen(expr, mode)
-  execute ':cd ' . fnameescape(a:expr)
+function s:handler.makePreviewLines(word, count)
+  return fuf#makePreviewLinesAround(
+        \ fuf#glob(fnamemodify(a:word, ':p') . '*'),
+        \ [], a:count, self.getPreviewHeight())
+  return 
+endfunction
+
+"
+function s:handler.getCompleteItems(patternPrimary)
+  return s:items
+endfunction
+
+"
+function s:handler.onOpen(word, mode)
+  execute ':cd ' . fnameescape(a:word)
 endfunction
 
 "
