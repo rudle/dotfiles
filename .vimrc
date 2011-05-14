@@ -34,7 +34,7 @@ set showmatch
 set showmode
 set smartcase
 set smartindent
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\%{Percent()}%%
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
 set sw=2
 set tabstop=2
 set textwidth=79
