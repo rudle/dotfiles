@@ -5,15 +5,15 @@ SAVEHIST=10000
 setopt appendhistory autocd extendedglob
 unsetopt beep nomatch notify
 bindkey -v
+ 
+export ZSH=$HOME/.oh-my-zsh
+export ZSH_THEME='pmcgee'
+
+source $ZSH/oh-my-zsh.sh
 
 bindkey '^u' history-beginning-search-backward
 bindkey '^p' history-beginning-search-forward
 bindkey '^J' push-line
-
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-PS1="$(print '┌─[\e[32;1m%n@%m%s\e[0m][\e[14;1m%~\e[0m]
-└─╼ ')"
 
 zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list
 zstyle ':completion:*' format $'%{\e[0;33m%}completing %B%d%b%{\e[0m%}'
@@ -47,7 +47,11 @@ setopt cdablevars
 
 # End of lines added by compinstall
 
+alias spec='rspec --color'
+alias cower='cower -cf -t $HOME/builds'
+alias aurget='aurget --noedit --deps --discard --noconfirm'
 alias ps='psgrep'
+alias mplayer='mplayer -vo xv'
 alias ssh='TERM=xterm; ssh'
 alias slurpy='slurpy --save-to=/home/sean/builds'
 alias vim='vim'
@@ -68,14 +72,21 @@ alias cp='nocorrect cp'
 alias rm='nocorrect rm'
 alias mkdir='nocorrect mkdir'
 alias xwrits='xwrits typetime=55 break=5 flashtime=:2 after 5 clock multiply=5:1.4 +mouse'
+alias t='python ~/bin/t.py --task-dir ~/tasks --list todo.txt'
+alias td='python ~/bin/t.py  --task-dir ~/tasks --list todo.txt -f'
+alias cdl='cd $1; ll'
 
-export PATH=$PATH:/usr/bin/:bin/:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/home/sean/.scripts:/home/sean/.gem/ruby/1.8/bin:/opt/:/opt/openoffice/program:/usr/share/eclipse
+export PATH=$PATH:/home/sean/cs350/bin/:/usr/bin/:bin/:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/home/sean/.scripts:/home/sean/.gem/ruby/1.8/bin:/opt/:/opt/openoffice/program:/usr/share/eclipse:/home/sean/bin:/home/sean/bin/mlbviewer
 
-export MPD_HOST='sean-work'
-export hostname='sean-work'
+export MPD_HOST='seandesktop'
+export hostname='seandesktop'
 
 export EDITOR='vim'
 export FCEDIT='vim'
+export PAGER='less'
+
+export CVS_RSH="ssh"
+export CVSROOT=":ext:ssorrell@student.cs.uwaterloo.ca:/u5/empuurunen/cvsroot/cs350/"
 
 rationalise-dot() {
 if [[ $LBUFFER = *.. ]]; then
@@ -84,7 +95,28 @@ if [[ $LBUFFER = *.. ]]; then
         LBUFFER+=.
 fi
 }
+# get the name of the branch we are on
+function git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+
+parse_git_dirty () {
+  if [[ -n $(git status -s 2> /dev/null) ]]; then
+echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+  else
+echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+  fi
+}
+
+
 zle -N rationalise-dot
 bindkey . rationalise-dot
 
-#screen integration to set caption bar dynamically
+source ~/.rvm/scripts/rvm
+
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# hack to load .rvmrc if present
+cd `pwd`
